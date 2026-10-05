@@ -31,7 +31,7 @@ What's missing for the website: a **public, read-only JSON availability
 endpoint** (the website shouldn't parse iCal), CORS, and later an endpoint
 for **booking requests**.
 
-## Phase 0: make it our own repository
+## Phase 0: make it our own repository (done: `saintgermainlabs/booking-sync`)
 
 1. Create a standalone **private** repo (for example
    `saintgermainlabs/suspiro-sync`). A GitHub fork of a public repo can't be
@@ -48,7 +48,7 @@ for **booking requests**.
    `docs/DOCKER-DEPLOYMENT.md` or `docs/DROPLET-SETUP.md`. Set
    `JWT_SECRET` (the middleware falls back to an insecure default), a
    database path with backups, and the cron job in `deploy/cron`.
-2. **Single-tenant hardening:** turn off public signup, Google One Tap and the
+2. **Single-tenant hardening** (done, private mode; see the README): turn off public signup, Google One Tap and the
    marketing/blog pages (`/`, `/blog`, `/onboard`, sitemap, `llms.txt`).
    Redirect `/` to `/login`. Remove the Gemini passport OCR unless we want it.
    The Croatian eVisitor module doesn't apply here (see the note at the end).

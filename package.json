@@ -1,15 +1,15 @@
 {
-  "name": "renttools",
+  "name": "booking-sync",
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "homepage": "https://renttools.io",
+  "homepage": "https://github.com/saintgermainlabs/booking-sync",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Gribadan/RentTools.io.git"
+    "url": "https://github.com/saintgermainlabs/booking-sync.git"
   },
   "bugs": {
-    "url": "https://github.com/Gribadan/RentTools.io/issues"
+    "url": "https://github.com/saintgermainlabs/booking-sync/issues"
   },
   "scripts": {
     "dev": "next dev",

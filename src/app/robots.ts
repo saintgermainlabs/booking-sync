@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
 import { isStagingHost } from "@/lib/seo-host";
+import { isPrivateMode } from "@/lib/private-mode";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://renttools.io";
 
@@ -12,6 +13,12 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://renttools.io";
  * URL the build pipeline might surface.
  */
 export default async function robots(): Promise<MetadataRoute.Robots> {
+  // A private deployment has nothing to index: the login page and the
+  // dashboard are for the owner only.
+  if (isPrivateMode()) {
+    return { rules: { userAgent: "*", disallow: "/" } };
+  }
+
   const hdrs = await headers();
 
   if (isStagingHost(hdrs.get("host"))) {

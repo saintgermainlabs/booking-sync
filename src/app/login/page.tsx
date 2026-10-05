@@ -7,6 +7,7 @@ import { useI18n } from "@/lib/i18n/context";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { GoogleOneTap } from "@/components/google-one-tap";
 import { MarketingHeader } from "@/components/marketing-header";
+import { isPrivateMode } from "@/lib/private-mode";
 import { AuthDivider, AuthError, AuthInput, AuthLabel, AuthSubmit } from "@/components/auth-form";
 
 // Only allow same-origin redirects (must start with "/" but not "//")
@@ -75,7 +76,7 @@ function LoginPageInner() {
 
   return (
     <div className="editorial min-h-screen flex flex-col">
-      <GoogleOneTap next={next !== "/dashboard" ? next : undefined} />
+      {!isPrivateMode() && <GoogleOneTap next={next !== "/dashboard" ? next : undefined} />}
 
       {/* ── Header ── matches the editorial header on / so the login
           surface reads as the same site (RT-25.7). Coral pill + white
@@ -131,6 +132,7 @@ function LoginPageInner() {
           </div>
 
           <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-2)] p-6 sm:p-7">
+            {!isPrivateMode() && (
             <div className="mb-4 space-y-3">
               <GoogleSignInButton
                 next={next !== "/dashboard" ? next : undefined}
@@ -138,6 +140,7 @@ function LoginPageInner() {
               />
               <AuthDivider label={t("login.or")} />
             </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1.5">
                 <AuthLabel htmlFor="username">{t("login.email")}</AuthLabel>
@@ -186,6 +189,7 @@ function LoginPageInner() {
             </form>
           </div>
 
+          {!isPrivateMode() && (
           <p className="mt-5 text-center text-[13px] text-[var(--ink-3)]">
             {t("login.noAccount")}{" "}
             <Link
@@ -199,6 +203,7 @@ function LoginPageInner() {
               {t("login.signUpLink")}
             </Link>
           </p>
+          )}
         </div>
       </main>
     </div>

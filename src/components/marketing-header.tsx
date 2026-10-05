@@ -5,6 +5,7 @@ import { LocaleSwitcher } from "@/components/locale-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useI18n } from "@/lib/i18n/context";
 import { useSession } from "@/lib/session-context";
+import { isPrivateMode } from "@/lib/private-mode";
 
 const REPO_URL = "https://github.com/Gribadan/RentTools.io";
 
@@ -121,6 +122,8 @@ export function MarketingHeader({ sticky = false, softLocaleSwitch = false }: Ma
             discoverable nav link the user can still reach via the
             footer or the dashboard side panel. */}
         <nav className="flex shrink-0 items-center gap-0.5 sm:gap-2">
+          {!isPrivateMode() && (
+          <>
           <Link
             href={localized("/blog")}
             className="hidden whitespace-nowrap rounded-md px-2 py-1.5 text-[13px] text-[var(--ink-3)] transition-colors hover:bg-[var(--bg-2)] hover:text-[var(--ink)] sm:inline-flex sm:px-3"
@@ -138,6 +141,8 @@ export function MarketingHeader({ sticky = false, softLocaleSwitch = false }: Ma
             </svg>
             GitHub
           </a>
+          </>
+          )}
           {isAuthenticated ? (
             // Already signed in — collapse Sign in + Get started into a
             // single Dashboard button. Anything else is the wrong call:
@@ -159,12 +164,14 @@ export function MarketingHeader({ sticky = false, softLocaleSwitch = false }: Ma
               >
                 {t.signIn}
               </Link>
+              {!isPrivateMode() && (
               <Link
                 href={localized("/onboard")}
                 className="hidden whitespace-nowrap rounded-md bg-[var(--ink)] px-3 py-1.5 text-[13px] font-medium text-[var(--bg)] transition-colors hover:bg-[var(--ink-2)] sm:inline-flex"
               >
                 {t.getStarted}
               </Link>
+              )}
             </>
           )}
           {/* Divider hidden on mobile — every pixel matters and the

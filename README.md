@@ -1,3 +1,32 @@
+# booking-sync
+
+Private calendar-sync hub for **Suspiro del Mar**
+([suspirodelmar.com](https://suspirodelmar.com)): keeps Airbnb, Booking.com
+and the website's availability in step. The roadmap is in
+[docs/SUSPIRO-INTEGRATION-PLAN.md](docs/SUSPIRO-INTEGRATION-PLAN.md).
+
+Based on [RentTools.io](https://github.com/Gribadan/RentTools.io) (MIT, see
+[LICENSE](LICENSE)). The upstream README follows below for reference.
+
+## Running it privately
+
+This build defaults to **private mode** (`NEXT_PUBLIC_PRIVATE_MODE`, on
+unless set to `false`, and inlined at build time). In private mode:
+
+- public signup, onboarding and Google sign-in are off;
+- the landing page redirects to the dashboard, and the blog, changelog,
+  sitemap and `llms.txt` return 404;
+- `robots.txt` disallows everything.
+
+Login, the dashboard, manager/cleaner invites, guest forms and the iCal
+feeds work as before. Create the owner account once with:
+
+```bash
+SEED_ADMIN_USERNAME=you@example.com SEED_ADMIN_PASSWORD='a-strong-password' npm run db:seed
+```
+
+---
+
 # RentTools.io
 
 > **Free, open-source property manager for short-term rental hosts.**

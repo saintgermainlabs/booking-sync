@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 import { log } from "@/lib/logger";
 import { redactSensitiveRequestPath } from "@/lib/request-path";
+import { isPrivateMode, privateModeAction } from "@/lib/private-mode";
 
 const JWT_SECRET_RAW = process.env.JWT_SECRET || "fallback-secret-change-me";
 const SECRET = new TextEncoder().encode(JWT_SECRET_RAW);
@@ -157,6 +158,27 @@ function isParamAuthPage(request: NextRequest, restPath: string): boolean {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const startedAt = Date.now();
+
+  // ── Private (single-owner) mode ──
+  // Runs before i18n so /ru/blog etc. are caught too. See
+  // src/lib/private-mode.ts for what is switched off and why.
+  if (isPrivateMode()) {
+    const action = privateModeAction(detectLocaleFromPath(pathname)?.rest ?? pathname);
+    if (action === "dashboard") {
+      const r = NextResponse.redirect(new URL("/dashboard", request.url));
+      logRequest(request, r, startedAt);
+      return r;
+    }
+    if (action === "not-found") {
+      const r = withSecurityHeaders(
+        pathname.startsWith("/api/")
+          ? NextResponse.json({ error: "Not found" }, { status: 404 })
+          : new NextResponse("Not found", { status: 404 }),
+      );
+      logRequest(request, r, startedAt);
+      return r;
+    }
+  }
 
   // ── i18n routing ──
   // If the path begins with a known non-default locale prefix
